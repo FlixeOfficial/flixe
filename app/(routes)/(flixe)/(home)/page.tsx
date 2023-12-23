@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 
 import authOptions from "@/app/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import { WalletConnection } from "@/components/wallet-connection";
+import Image from "next/image";
 // import { ScrollCore } from "./components/scroll";
 // import { BackgroundSVG } from './components/backgroundBeam';
 // import { MeteorPreview } from './components/meteorPreview';
@@ -24,7 +24,7 @@ export default async function Home() {
   if (!session?.user?.email) {
     return (
       <main className="flex flex-col items-center justify-between h-[100vh] -mt-[4.5rem] ">
-        <div className="flex flex-col items-center justify-center gap-4 z-10 h-full">
+        <div className="flex flex-col items-center justify-center gap-4 z-10 h-full text-white">
           <h1 className="text-9xl font-black text-center leading-tight tracking-tighter mb-4">
             Step<span className="text-8xl"> </span>into
             <span className="text-8xl"> </span>

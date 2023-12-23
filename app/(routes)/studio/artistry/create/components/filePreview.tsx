@@ -84,8 +84,9 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         );
       default:
         return (
-          <div className="flex justify-center items-center bg-card w-[100%] h-[100%] rounded-lg text-center p-5 font-semibold text-xl text-primary/30">
-            Select any Image, 3D Model, Video or Music Art
+          <div className="flex flex-col justify-center items-center bg-card w-[100%] h-[100%] rounded-lg text-center p-5 font-semibold text-xl text-primary/30">
+            Select Your ART File
+            <p className="text-sm">(Image, Video, Music, Model)</p>
           </div>
         );
     }

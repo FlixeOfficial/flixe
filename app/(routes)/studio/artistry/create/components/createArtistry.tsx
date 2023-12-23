@@ -510,7 +510,7 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
                 disabled={fileType === "Unknown"}
               />
 
-              <div className="relative group hover:shadow-sm w-[500px] h-[340px] rounded-lg bg-card cursor-pointer hover:bg-card self-end">
+              <div className="relative group hover:shadow-sm w-[500px] h-[340px] rounded-lg bg-card cursor-pointer hover:bg-card self-end border">
                 <div className="relative h-full">
                   {form.watch("image") ? (
                     <Image

@@ -19,7 +19,7 @@ interface GenresProps {
 }
 
 const iconMap: Record<Genre["name"], IconType> = {
-  "All": FcMultipleDevices,
+  "All Flix": FcMultipleDevices,
   "Music": FcMusic,
   "Photography": FcOldTimeCamera,
   "Fitness": FcSportsMode,
@@ -32,7 +32,7 @@ const iconMap: Record<Genre["name"], IconType> = {
 export const Genres = ({
   items,
 }: GenresProps) => {
-  const allGenre = { id: "all", name: "All Flix" };
+  const allGenre = { id: "all", name: "All" };
   const genres = [allGenre, ...items];
 
   return (
