@@ -77,7 +77,7 @@ const ThreeDModel = ({
   }
 
   return (
-    <Fragment>
+    <div className="w-full h-full" >
       <div className="absolute m-6 z-40 w-36">
         {animate && selectedAnimation !== null && modelAnimation.length > 0 && (
           <Select
@@ -116,7 +116,7 @@ const ThreeDModel = ({
           enableZoom={enableZoom}
         />
       </Canvas>
-    </Fragment>
+    </div>
   );
 };
 

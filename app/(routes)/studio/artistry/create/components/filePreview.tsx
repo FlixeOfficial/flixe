@@ -59,7 +59,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             enableDamping={true}
             enablePan={true}
             enableZoom={true}
-            loader={<p>Loading Model...</p>}
+            loader={<Loader2 className='h-3 w-3 animate-spin' />}
           />
         );
       case "Video":
@@ -158,8 +158,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             <Expand className="h-4 w-4" />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent className="w-[80%] h-[80%] flex flex-col justify-center items-center">
-          <AlertDialogDescription>
+        <AlertDialogContent className="w-[80vw] h-[80vh] flex flex-col justify-center items-center">
+          <AlertDialogDescription className='w-[80vw] h-[80vh]'>
             <AlertDialogCancel className="absolute top-2 right-2 z-10 rounded-full bg-foreground/10 hover:bg-muted-foreground/20 p-3 backdrop-filter backdrop-blur-md text-priamry">
               <XCircle className="h-4 w-4" />
             </AlertDialogCancel>
