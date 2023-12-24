@@ -2,9 +2,10 @@ import Web3 from "web3";
 import abi from "../abis/AdwareAbi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_ADWARE_CONTRACT_ADDRESS;
+const RPC_URL = process.env.NEXT_PUBLIC_THETA_RPC_URL;
 
-const MIN_GAS_PRICE_GWEI = process.env.MIN_GAS_PRICE_GWEI || "2";
-const DEFAULT_GAS_LIMIT = process.env.DEFAULT_GAS_LIMIT || "3000000";
+const MIN_GAS_PRICE_GWEI = process.env.NEXT_PUBLIC_MIN_GAS_PRICE_GWEI || "2";
+const DEFAULT_GAS_LIMIT = process.env.NEXT_PUBLIC_DEFAULT_GAS_LIMIT || "3000000";
 
 const getAdjustedGasPrice = async (web3: Web3): Promise<string> => {
   const gasPrice = await web3.eth.getGasPrice();
@@ -44,7 +45,7 @@ const AdwareInteraction = (): AdwareContract => {
       console.error("User denied account access...");
     }
   } else {
-    web3 = new Web3("https://evm-test.exzo.network");
+    web3 = new Web3(RPC_URL);
   }
 
   adwareContract = new web3.eth.Contract(abi, contractAddress);
@@ -135,7 +136,7 @@ const AdwareInteraction = (): AdwareContract => {
     try {
       const accounts = await web3.eth.getAccounts();
       const adjustedGasPrice = await getAdjustedGasPrice(web3);
-  
+
       // Assuming 'adwareContract' is your contract instance
       const receipt = await adwareContract.methods
         .displayNextVideoAd(contentCreator)
@@ -144,7 +145,7 @@ const AdwareInteraction = (): AdwareContract => {
           gas: DEFAULT_GAS_LIMIT,
           gasPrice: adjustedGasPrice,
         });
-  
+
       // Check for VideoAdResult event
       const videoAdResultEvent = receipt.events?.VideoAdResult;
       if (videoAdResultEvent) {
@@ -152,22 +153,22 @@ const AdwareInteraction = (): AdwareContract => {
         console.log("Video Ad Result:", message);
         return { type: "result", message };
       }
-  
+
       // Check for VideoAdPlayed event
       const videoAdPlayedEvent = receipt.events?.VideoAdPlayed;
       if (videoAdPlayedEvent) {
         const videoAdDetails = videoAdPlayedEvent.returnValues;
         console.log("Video Ad Played:", videoAdDetails);
         return { type: "played", details: videoAdDetails };
-      } 
-  
+      }
+
       console.log("No relevant event found.");
       return { type: "none" };
     } catch (error) {
       console.error("Error while displaying video ad:", error);
       throw error;
     }
-  };  
+  };
 
   // Check pending withdrawals for a user
   const checkPendingWithdrawal = async (user: string) => {

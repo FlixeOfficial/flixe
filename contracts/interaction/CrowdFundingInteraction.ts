@@ -2,9 +2,10 @@ import Web3 from "web3";
 import abi from "../abis/CrowdFundingAbi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_CROWDFUNDING_CONTRACT_ADDRESS;
+const RPC_URL = process.env.NEXT_PUBLIC_THETA_RPC_URL;
 
-const MIN_GAS_PRICE_GWEI = process.env.MIN_GAS_PRICE_GWEI || "2";
-const DEFAULT_GAS_LIMIT = process.env.DEFAULT_GAS_LIMIT || "3000000";
+const MIN_GAS_PRICE_GWEI = process.env.NEXT_PUBLIC_MIN_GAS_PRICE_GWEI || "2";
+const DEFAULT_GAS_LIMIT = process.env.NEXT_PUBLIC_DEFAULT_GAS_LIMIT || "3000000";
 
 const getAdjustedGasPrice = async (web3: Web3): Promise<string> => {
   const gasPrice = await web3.eth.getGasPrice();
@@ -40,7 +41,7 @@ const CrowdFundingInteraction = (): CrowdFundingContract => {
       console.error("User denied account access...");
     }
   } else {
-    web3 = new Web3("https://evm-test.exzo.network");
+    web3 = new Web3("https://eth-rpc-api-testnet.thetatoken.org/rpc");
   }
 
   crowdFundingContract = new web3.eth.Contract(abi, contractAddress);

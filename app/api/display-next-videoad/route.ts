@@ -3,8 +3,10 @@ import Web3 from "web3";
 import abi from "@/contracts/abis/AdwareAbi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_ADWARE_CONTRACT_ADDRESS;
-const MIN_GAS_PRICE_GWEI = process.env.MIN_GAS_PRICE_GWEI || "2";
-const DEFAULT_GAS_LIMIT = process.env.DEFAULT_GAS_LIMIT || "3000000";
+const RPC_URL = process.env.NEXT_PUBLIC_THETA_RPC_URL;
+
+const MIN_GAS_PRICE_GWEI = process.env.NEXT_PUBLIC_MIN_GAS_PRICE_GWEI || "2";
+const DEFAULT_GAS_LIMIT = process.env.NEXT_PUBLIC_DEFAULT_GAS_LIMIT || "3000000";
 
 export async function POST(req: NextRequest) {
   console.log("hello from the api");
@@ -15,6 +17,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  if (RPC_URL === undefined) {
+    return new NextResponse(
+      JSON.stringify({ success: false, message: "RPC_URL is undefined" }),
+      { status: 500 }
+    );
+  }
+
   try {
     const requestBody = await req.text();
     const body = JSON.parse(requestBody);
@@ -22,7 +31,7 @@ export async function POST(req: NextRequest) {
     console.log("key: ", process.env.WALLET_PRIVATE_KEY);
     // Initialize Web3 with the server's wallet
     const web3 = new Web3(
-      new Web3.providers.HttpProvider("https://evm-test.exzo.network")
+      new Web3.providers.HttpProvider(RPC_URL)
     );
     const account = web3.eth.accounts.privateKeyToAccount(
       "0x" + process.env.WALLET_PRIVATE_KEY

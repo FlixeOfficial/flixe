@@ -447,16 +447,16 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
         );
       } else if (initialData.saleStatus !== "AUCTION") {
         setDynamicContent(
-          "Set the valid price and auction duration to put this Flix on NFT Auction."
+          "Set price and duration to list Flix for NFT Auction."
         );
       }
     } else if (form.watch("saleStatus") === "STREAM") {
       setDynamicContent(
-        "Offers complimentary access to free episodes and exclusive premium content as part of a Premium Membership."
+        "Limit premium episode access only to Standard or Premium users."
       );
     } else if (form.watch("saleStatus") === "RENT") {
       setDynamicContent(
-        "Offers complimentary access to free episodes and allows you to Rent exclusive premium content"
+        "Premium episodes are reserved only for renters."
       );
     } else {
       setDynamicContent(
@@ -689,10 +689,10 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                     <div className="flex flex-row gap-3 items-center justify-between rounded-lg border p-4 bg-card w-1/2">
                       <div className="space-y-0.5">
                         <FormLabel htmlFor="date" className="text-base">
-                          Action end time
+                          End Time
                         </FormLabel>
                         <FormDescription className="whitespace-nowrap">
-                          Set Auction end time
+                          Set End time
                         </FormDescription>
                       </div>
                       <DateTimePicker
@@ -722,7 +722,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                               </FormDescription>
                             ) : (
                               <FormDescription className="whitespace-nowrap">
-                                Set valid price and duration first
+                                Set Price & Duration
                               </FormDescription>
                             )}
                           </div>
