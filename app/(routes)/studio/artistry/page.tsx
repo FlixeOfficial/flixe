@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetchAddress } from "@/lib/walletUtil";
 import { useRouter } from "next/navigation";
+import { PlusCircle } from 'lucide-react';
 
 const CreateCampaign = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +41,7 @@ const CreateCampaign = () => {
           size="sm"
           onClick={handleClick}
         >
+          <PlusCircle className="h-4 w-4 mr-2 font-bold" />
           Create
         </Button>
       </div>

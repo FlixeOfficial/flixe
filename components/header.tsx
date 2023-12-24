@@ -45,7 +45,7 @@ export default function Header() {
         <Confetti style={{ opacity: confettiOpacity }} numberOfPieces={200} />
       )}
 
-      <div className="fixed top-3 left-0 right-0 mx-auto h-12 xl:max-w-[50%] w-full lg:max-w-[80%] md:max-w-[90%] sm:max-w-[95%] bg-[#272727] bg-opacity-50 backdrop-filter backdrop-blur-lg overflow-hidden rounded-2xl border border-zinc-600 flex justify-between px-1.5 items-center z-50">
+      <div className="fixed top-3 left-0 right-0 mx-auto h-12 xl:max-w-[55vw] w-[100vw] lg:max-w-[80vw] md:max-w-[90vw] sm:max-w-[95vw] bg-[#27272733] bg-opacity-50 backdrop-filter backdrop-blur-lg overflow-hidden rounded-2xl border border-border flex justify-between px-1.5 items-center z-50">
         {/* Left Section */}
         <div className="flex gap-3">
           <div
@@ -71,7 +71,7 @@ export default function Header() {
         </div>
 
         {/* Middle Section */}
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-5 font-bold text-md ">
+        <div className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-5 font-bold text-md ">
           {menuItems.map((item) => (
             <Link
               key={item}

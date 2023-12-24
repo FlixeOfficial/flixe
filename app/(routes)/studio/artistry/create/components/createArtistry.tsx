@@ -179,10 +179,15 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
     const { title, image, art, categoryId, description, url, properties } =
       values;
 
-      debugger;
+    debugger;
 
     // Ensure the file exists and is a File instance
-    if (values.image && values.image instanceof File && values.art && values.art instanceof File) {
+    if (
+      values.image &&
+      values.image instanceof File &&
+      values.art &&
+      values.art instanceof File
+    ) {
       try {
         const [res1] = await uploadFiles({
           files: [values.image],
@@ -377,8 +382,7 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
                 )}
               />
 
-
-<div></div>
+              <div></div>
 
               <FormField
                 control={form.control}
@@ -437,7 +441,10 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
                   </TooltipProvider> */}
                 </div>
                 {fields.map((item, index) => (
-                  <div key={item.id} className="my-4 border p-2 rounded-md">
+                  <div
+                    key={item.id}
+                    className="my-4 bg-border/20 p-2 rounded-md"
+                  >
                     <div className="flex gap-4 items-center">
                       {/* Property Name */}
                       <FormField

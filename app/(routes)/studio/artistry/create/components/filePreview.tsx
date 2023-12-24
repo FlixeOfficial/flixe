@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import ThreeDModel from "./ThreeDModel";
 import { Button } from "@/components/ui/button";
-import { Expand, XCircle } from "lucide-react";
+import { Expand, Loader2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type FilePreviewProps = {
@@ -86,7 +86,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         return (
           <div className="flex flex-col justify-center items-center bg-card w-[100%] h-[100%] rounded-lg text-center p-5 font-semibold text-xl text-primary/30">
             Select Your ART File
-            <p className="text-sm">(Image, Video, Music, Model)</p>
+            <p className="text-sm">( Image, Video, Music, Model.glb )</p>
           </div>
         );
     }
@@ -132,7 +132,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             enableDamping={true}
             enablePan={true}
             enableZoom={true}
-            loader={<p>Loading Model...</p>} // Adjust loader as necessary
+            loader={<Loader2 className='h-3 w-3 animate-spin' />}
           />
         );
       default:

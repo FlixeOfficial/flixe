@@ -7,7 +7,6 @@ import React, { useState, useEffect } from "react";
 import CountBox from "../../../../../components/CountBox";
 import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import DonationTable from "./donator-table";
 import Link from "next/link";

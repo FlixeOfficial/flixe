@@ -7,7 +7,7 @@ import React, {
   useLayoutEffect,
   Fragment,
 } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Bounds, OrbitControls, useGLTF, Html } from "@react-three/drei";
 import * as THREE from "three";
 import {
@@ -26,21 +26,6 @@ type ThreeDModelProps = {
   enablePan?: boolean;
   enableZoom?: boolean;
   loader?: JSX.Element;
-};
-
-type CameraSetupProps = {
-  position: [number, number, number];
-};
-
-const CameraSetup = ({ position }: CameraSetupProps) => {
-  const { camera } = useThree();
-
-  useEffect(() => {
-    camera.position.set(...position);
-    camera.lookAt(0, 0, 0);
-  }, [camera, position]);
-
-  return null;
 };
 
 const ThreeDModel = ({
@@ -71,7 +56,7 @@ const ThreeDModel = ({
           })
         );
       }
-    }, [animations]);    
+    }, [animations]);
 
     // initialize mixer in useMemo to avoid re-creating it on every frame
     const mixer = React.useMemo(() => new THREE.AnimationMixer(scene), [scene]);
@@ -81,19 +66,15 @@ const ThreeDModel = ({
         mixer.clipAction(animations[selectedAnimation]).play();
       }
     }, [animations, mixer, selectedAnimation]); // eslint-disable-line react-hooks/exhaustive-deps
-
+ 
     useFrame((state, delta) => {
       if (animate && mixer) {
         mixer.update(delta);
       }
     });
 
-    scene.position.y = -100;
-
     return <primitive object={scene} dispose={null} />;
   }
-
-  console.log(modelUrl);
 
   return (
     <Fragment>
@@ -117,7 +98,6 @@ const ThreeDModel = ({
         )}
       </div>
       <Canvas>
-        <CameraSetup position={[0, 0, 200]} />
         <ambientLight intensity={3} />
         <spotLight position={[10, 15, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -15, -10]} />
@@ -134,8 +114,6 @@ const ThreeDModel = ({
           enableDamping={enableDamping}
           enablePan={enablePan}
           enableZoom={enableZoom}
-          minDistance={5}
-          maxDistance={10}
         />
       </Canvas>
     </Fragment>
