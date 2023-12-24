@@ -189,3 +189,15 @@
   color: transparent;
   animation: gradient 15s ease infinite;
 }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.star {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  fill-opacity: 0.1; /* Default opacity */
+}

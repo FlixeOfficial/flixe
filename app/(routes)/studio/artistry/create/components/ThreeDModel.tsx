@@ -50,7 +50,6 @@ const ThreeDModel = ({
       if (animate && animations.length > 0 && modelAnimation.length === 0) {
         setmodelAnimation(
           animations.map((animation: any, index: any) => {
-            // Check if the animation name is 'mixamo.com' and replace it with 'default'
             const name = animation.name === 'mixamo.com' ? 'default' : animation.name;
             return { id: index.toString(), name: name };
           })
