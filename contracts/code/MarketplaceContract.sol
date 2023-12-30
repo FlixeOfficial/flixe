@@ -133,8 +133,8 @@ contract Marketplace is ERC721URIStorage {
     }
 
     // Initializes the contract, setting the market owner and NFT details.
-    constructor() ERC721("FLIXE MARKETPLACE", "FLX") {
-        _marketOwner = payable(msg.sender);
+    constructor(address _contractOwner) ERC721("FLIXE MARKETPLACE", "FLX") {
+        _marketOwner = _contractOwner;
     }
 
     // Allows the owner to set a new platform fee.

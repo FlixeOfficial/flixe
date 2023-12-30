@@ -109,12 +109,12 @@ const EpisodeIdPage = async ({
             ) : ( */}
             {flixs.flixNftId &&
             flix.price &&
-            flixs.saleStatus != "STREAM" ? (
+            flixs.flixSaleStatus != "STREAM" ? (
               <FlixEnrollButton
                 flixId={params.flixId}
                 price={flix.price!}
                 flixNftId={flixs.flixNftId}
-                nftType={flixs.saleStatus}
+                nftType={flixs.flixSaleStatus}
               />
             ) : (
               <p className="px-4 py-2 text-red-200 rounded-2xl bg-opacity-80 tracking-wider uppercase">

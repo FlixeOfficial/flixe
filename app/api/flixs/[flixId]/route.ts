@@ -130,7 +130,7 @@ async function populateCompleteData(flixId: string) {
       price: undefined,
       discountPercentage: undefined,
       isPublished: undefined,
-      saleStatus: undefined,
+      flixSaleStatus: undefined,
       updatedAt: undefined,
       flixDataUrl: undefined,
       completeData: undefined,
@@ -187,7 +187,7 @@ export async function PATCH(
         userId: session.user.email,
       },
       include: {
-        saleDetails: true,
+        flixSaleDetails: true,
         episodes: true,
       },
     });
@@ -197,11 +197,11 @@ export async function PATCH(
     }
 
     if (
-      values.saleStatus === "AUCTION" &&
-      (!values.saleDetails ||
-        values.saleDetails.timeLeft === undefined ||
-        values.saleDetails.timeLeft === null ||
-        values.saleDetails.timeLeft < 0)
+      values.flixSaleStatus === "AUCTION" &&
+      (!values.flixSaleDetails ||
+        values.flixSaleDetails.timeLeft === undefined ||
+        values.flixSaleDetails.timeLeft === null ||
+        values.flixSaleDetails.timeLeft < 0)
     ) {
       return new NextResponse(
         "Auction start date should be today or in the future.",
@@ -266,31 +266,31 @@ export async function PATCH(
       }
     }
 
-    if (values.saleStatus !== "STREAM") {
-      if (existingFlix.saleDetails) {
-        await db.saleDetails.update({
-          where: { id: existingFlix.saleDetails.id },
+    if (values.flixSaleStatus !== "STREAM") {
+      if (existingFlix.flixSaleDetails) {
+        await db.flixSaleDetails.update({
+          where: { id: existingFlix.flixSaleDetails.id },
           data: {
-            timeLeft: values.saleDetails?.timeLeft || undefined,
-            endTime: values.saleDetails?.endTime || undefined,
+            timeLeft: values.flixSaleDetails?.timeLeft || undefined,
+            endTime: values.flixSaleDetails?.endTime || undefined,
             price: values.price || undefined,
             discountPercentage: values.discountPercentage || undefined,
           },
         });
       } else {
-        await db.saleDetails.create({
+        await db.flixSaleDetails.create({
           data: {
-            timeLeft: values.saleDetails?.timeLeft || undefined,
-            endTime: values.saleDetails?.endTime || undefined,
+            timeLeft: values.flixSaleDetails?.timeLeft || undefined,
+            endTime: values.flixSaleDetails?.endTime || undefined,
             price: values.price || undefined,
             discountPercentage: values.discountPercentage || undefined,
             flix: { connect: { id: flixId } },
           },
         });
       }
-    } else if (existingFlix.saleDetails) {
-      await db.saleDetails.delete({
-        where: { id: existingFlix.saleDetails.id },
+    } else if (existingFlix.flixSaleDetails) {
+      await db.flixSaleDetails.delete({
+        where: { id: existingFlix.flixSaleDetails.id },
       });
     }
 
@@ -315,16 +315,16 @@ export async function PATCH(
       // if (values.flixNftId !== undefined) updateData.flixNftId = values.flixNftId;
       // if (values.flixDataUrl !== undefined)
       //   updateData.flixDataUrl = values.flixDataUrl;
-      // if (values.saleStatus !== undefined)
-      //   updateData.saleStatus = values.saleStatus;
+      // if (values.flixSaleStatus !== undefined)
+      //   updateData.flixSaleStatus = values.flixSaleStatus;
       // if (values.price !== undefined) updateData.price = values.price;
       // if (values.discountPercentage !== undefined) updateData.discountPercentage = values.discountPercentage;
 
       for (const key in values) {
         if (values.hasOwnProperty(key)) {
-          // Check if the key is not 'saleDetails' and the value is not undefined
+          // Check if the key is not 'flixSaleDetails' and the value is not undefined
           if (
-            key !== "saleDetails" &&
+            key !== "flixSaleDetails" &&
             values[key] !== undefined &&
             ((key === "isNFT" && values.isNFT) || key !== "isNFT")
           ) {

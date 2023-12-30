@@ -72,9 +72,9 @@ contract LoanVault {
         _;
     }
 
-    constructor(address marketplaceAddress, uint32 _feePercent) {
+    constructor(address marketplaceAddress, address _contractOwner, uint32 _feePercent) {
         marketplace = IMarketplace(marketplaceAddress);
-        owner = msg.sender;
+        owner = _contractOwner;
         feePercent = _feePercent;
     }
 

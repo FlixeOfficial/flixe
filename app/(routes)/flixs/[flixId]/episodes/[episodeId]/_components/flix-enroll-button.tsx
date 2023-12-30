@@ -99,7 +99,7 @@ export const FlixEnrollButton = ({
                 userId: newOwnerAddress,
                 price: null,
                 discountPercentage: null,
-                saleStatus: "STREAM",
+                flixSaleStatus: "STREAM",
             };
 
             await axios.post(`/api/flixs/${flixId}/checkout`, payload);

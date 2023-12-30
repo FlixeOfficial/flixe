@@ -40,7 +40,7 @@ const NightSky: React.FC = () => {
     <div
       className={`fixed top-0 w-screen h-screen flex flex-col items-center justify-center transition-all duration-1000`}
       style={{
-        background: `radial-gradient(63.94% 63.94% at 50% 0%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 90%), ${BACKGROUNDS[bg]}`,
+        background: `radial-gradient(${BACKGROUNDS[bg]} 30%, rgba(255, 255, 255, 0) 70%)`,
       }}
     >
       <Stars />

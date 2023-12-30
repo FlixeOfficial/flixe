@@ -50,7 +50,7 @@ interface SaleDetailsFromDB {
 }
 
 interface FlixWithSaleDetails extends Flix {
-  saleDetails?: SaleDetailsFromDB | null;
+  flixSaleDetails?: SaleDetailsFromDB | null;
 }
 
 interface PriceFormProps {
@@ -75,7 +75,7 @@ const jsonString = z.string().refine(
 const formSchema = z
   .object({
     isNFT: z.boolean(),
-    saleStatus: z.enum(["STREAM", "AUCTION", "SALE", "RENT"]),
+    flixSaleStatus: z.enum(["STREAM", "AUCTION", "SALE", "RENT"]),
     price: z
       .string()
       .refine(
@@ -85,7 +85,7 @@ const formSchema = z
           path: ["price"],
         }
       ),
-    saleDetails: z.object({
+    flixSaleDetails: z.object({
       bottomPrice: z
         .string()
         .refine(
@@ -114,10 +114,10 @@ const formSchema = z
   })
   .refine(
     (data) => {
-      if (data.saleStatus === "AUCTION") {
+      if (data.flixSaleStatus === "AUCTION") {
         const price = parseFloat(data.price);
-        const bottomPrice = data.saleDetails.bottomPrice
-          ? parseFloat(data.saleDetails.bottomPrice)
+        const bottomPrice = data.flixSaleDetails.bottomPrice
+          ? parseFloat(data.flixSaleDetails.bottomPrice)
           : undefined;
         const discountPercentage = data.discountPercentage
           ? parseFloat(data.discountPercentage)
@@ -146,7 +146,7 @@ const formSchema = z
     {
       message:
         "When the sale status is 'AUCTION', the Bottom Price must be less than the Starting Price, and the Discount Percentage must not reduce the price below the Bottom Price in one interval.",
-      path: ["saleStatus"],
+      path: ["flixSaleStatus"],
     }
   );
 
@@ -172,20 +172,20 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       isNFT: initialData?.isNFT || undefined,
-      saleStatus: initialData?.saleStatus || "STREAM",
+      flixSaleStatus: initialData?.flixSaleStatus || "STREAM",
       price: initialData?.price ? initialData.price.toString() : undefined,
       discountPercentage: initialData?.discountPercentage
         ? initialData.discountPercentage.toString()
         : undefined,
-      saleDetails: {
-        bottomPrice: initialData?.saleDetails?.bottomPrice
-          ? initialData.saleDetails?.bottomPrice.toString()
+      flixSaleDetails: {
+        bottomPrice: initialData?.flixSaleDetails?.bottomPrice
+          ? initialData.flixSaleDetails?.bottomPrice.toString()
           : undefined,
-        timeLeft: initialData?.saleDetails?.timeLeft
-          ? initialData?.saleDetails?.timeLeft
+        timeLeft: initialData?.flixSaleDetails?.timeLeft
+          ? initialData?.flixSaleDetails?.timeLeft
           : 0,
-        endTime: initialData?.saleDetails?.endTime
-          ? JSON.stringify(initialData?.saleDetails?.endTime)
+        endTime: initialData?.flixSaleDetails?.endTime
+          ? JSON.stringify(initialData?.flixSaleDetails?.endTime)
           : undefined,
       },
     },
@@ -197,25 +197,25 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
     let payload;
 
     // STREAM
-    if (values.saleStatus === "STREAM") {
+    if (values.flixSaleStatus === "STREAM") {
       payload = {
         ...values,
         price: null,
         discountPercentage: null,
-        saleDetails: null,
+        flixSaleDetails: null,
       };
 
       try {
         if (
           initialData.flixNftId !== null &&
           initialData.flixNftId !== undefined &&
-          initialData.saleStatus !== "STREAM"
+          initialData.flixSaleStatus !== "STREAM"
         ) {
-          if (initialData.saleStatus === "SALE") {
+          if (initialData.flixSaleStatus === "SALE") {
             await nftMarketplace.unlistNFT(initialData.flixNftId);
-          } else if (initialData.saleStatus === "AUCTION") {
+          } else if (initialData.flixSaleStatus === "AUCTION") {
             await nftMarketplace.cancelNFTAuction(initialData.flixNftId);
-          } else if (initialData.saleStatus === "RENT") {
+          } else if (initialData.flixSaleStatus === "RENT") {
             await nftMarketplace.cancelNFTAuction(initialData.flixNftId);
           }
           toast({
@@ -236,12 +236,12 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
     }
 
     // RENT
-    if (values.saleStatus === "RENT" && initialData.saleStatus === "STREAM") {
+    if (values.flixSaleStatus === "RENT" && initialData.flixSaleStatus === "STREAM") {
       payload = {
         ...values,
         price: parseFloat(values.price),
         discountPercentage: null,
-        saleDetails: {
+        flixSaleDetails: {
           timeLeft: null,
           endTime: null,
           price: parseFloat(values.price),
@@ -254,7 +254,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
         if (
           initialData.flixNftId !== null &&
           initialData.flixNftId !== undefined &&
-          initialData.saleStatus === "STREAM"
+          initialData.flixSaleStatus === "STREAM"
         ) {
           await nftMarketplace.listNFTForRent(
             initialData.flixNftId,
@@ -278,12 +278,12 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
     }
 
     // FIXED SALE
-    if (values.saleStatus === "SALE" && initialData.saleStatus === "STREAM") {
+    if (values.flixSaleStatus === "SALE" && initialData.flixSaleStatus === "STREAM") {
       payload = {
         ...values,
         price: parseFloat(values.price),
         discountPercentage: null,
-        saleDetails: {
+        flixSaleDetails: {
           timeLeft: null,
           endTime: null,
           price: parseFloat(values.price),
@@ -296,7 +296,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
         if (
           initialData.flixNftId !== null &&
           initialData.flixNftId !== undefined &&
-          initialData.saleStatus === "STREAM"
+          initialData.flixSaleStatus === "STREAM"
         ) {
           await nftMarketplace.listNFTForSale(
             initialData.flixNftId,
@@ -321,19 +321,19 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
 
     // AUCTION
     if (
-      values.saleStatus === "AUCTION" &&
-      initialData.saleStatus === "STREAM" &&
+      values.flixSaleStatus === "AUCTION" &&
+      initialData.flixSaleStatus === "STREAM" &&
       values.discountPercentage
     ) {
       payload = {
         ...values,
         price: parseFloat(values.price),
         discountPercentage: parseFloat(values.discountPercentage),
-        saleDetails: {
+        flixSaleDetails: {
           timeLeft: getTimeDifferenceInSec(selectedDateTime),
           endTime: selectedDateTime,
           price: parseFloat(values.price),
-          bottomPrice: parseFloat(values.saleDetails.bottomPrice || "0"),
+          bottomPrice: parseFloat(values.flixSaleDetails.bottomPrice || "0"),
           discountPercentage: parseFloat(values.discountPercentage),
         },
       };
@@ -342,7 +342,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
         if (
           initialData.flixNftId !== null &&
           initialData.flixNftId !== undefined &&
-          initialData.saleStatus === "STREAM" &&
+          initialData.flixSaleStatus === "STREAM" &&
           getTimeDifferenceInSec(selectedDateTime) > 0
         ) {
           const discountAmount =
@@ -357,12 +357,12 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
           if (
             typeof initialData.flixNftId === "number" &&
             typeof values.price === "string" &&
-            typeof values.saleDetails.bottomPrice === "string"
+            typeof values.flixSaleDetails.bottomPrice === "string"
           ) {
             await nftMarketplace.startNFTAuction(
               initialData.flixNftId,
               parseFloat(values.price),
-              parseFloat(values.saleDetails.bottomPrice),
+              parseFloat(values.flixSaleDetails.bottomPrice),
               discountAmount,
               getTimeDifferenceInSec(selectedDateTime)
             );
@@ -413,7 +413,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
   useEffect(() => {
     const currentPrice = parseFloat(form.getValues().price || "0");
     const bottomPrice = parseFloat(
-      form.getValues().saleDetails.bottomPrice || "0"
+      form.getValues().flixSaleDetails.bottomPrice || "0"
     );
 
     if (currentPrice && selectedDateTime && bottomPrice < currentPrice) {
@@ -429,11 +429,11 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
   }, [
     form.getValues().price,
     selectedDateTime,
-    form.getValues().saleDetails.bottomPrice,
+    form.getValues().flixSaleDetails.bottomPrice,
   ]);
 
   useEffect(() => {
-    if (form.watch("saleStatus") === "AUCTION") {
+    if (form.watch("flixSaleStatus") === "AUCTION") {
       const currentPrice = parseFloat(form.getValues().price || "0");
       const discountPercent = parseFloat(
         form.watch("discountPercentage") || "0"
@@ -445,16 +445,16 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
         setDynamicContent(
           `For every 30 mins until auction's end, the price drops by ${discountPercent}% i.e roughly ${effectiveDiscount}`
         );
-      } else if (initialData.saleStatus !== "AUCTION") {
+      } else if (initialData.flixSaleStatus !== "AUCTION") {
         setDynamicContent(
           "Set price and duration to list Flix for NFT Auction."
         );
       }
-    } else if (form.watch("saleStatus") === "STREAM") {
+    } else if (form.watch("flixSaleStatus") === "STREAM") {
       setDynamicContent(
         "Limit premium episode access only to Standard or Premium users."
       );
-    } else if (form.watch("saleStatus") === "RENT") {
+    } else if (form.watch("flixSaleStatus") === "RENT") {
       setDynamicContent(
         "Premium episodes are reserved only for renters."
       );
@@ -467,7 +467,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
     form.getValues().price,
     form.watch("discountPercentage"),
     selectedDateTime,
-    form.watch("saleStatus"),
+    form.watch("flixSaleStatus"),
   ]);
 
   return (
@@ -517,7 +517,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
             {/* Set the Flix NFT Sales Status */}
             <FormField
               control={form.control}
-              name="saleStatus"
+              name="flixSaleStatus"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-card">
                   <div className="space-y-0.5">
@@ -550,8 +550,8 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                         <SelectItem
                           value="RENT"
                           disabled={
-                            initialData.saleStatus === "AUCTION" ||
-                            initialData.saleStatus === "SALE"
+                            initialData.flixSaleStatus === "AUCTION" ||
+                            initialData.flixSaleStatus === "SALE"
                           }
                         >
                           RENT
@@ -560,8 +560,8 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                         <SelectItem
                           value="AUCTION"
                           disabled={
-                            initialData.saleStatus === "SALE" ||
-                            initialData.saleStatus === "RENT"
+                            initialData.flixSaleStatus === "SALE" ||
+                            initialData.flixSaleStatus === "RENT"
                           }
                         >
                           AUCTION
@@ -569,8 +569,8 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                         <SelectItem
                           value="SALE"
                           disabled={
-                            initialData.saleStatus === "AUCTION" ||
-                            initialData.saleStatus === "RENT"
+                            initialData.flixSaleStatus === "AUCTION" ||
+                            initialData.flixSaleStatus === "RENT"
                           }
                         >
                           SALE
@@ -582,10 +582,10 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
               )}
             />
 
-            {form.watch("saleStatus") !== "STREAM" && (
+            {form.watch("flixSaleStatus") !== "STREAM" && (
               <div className="flex flex-col gap-4">
                 <div className="flex gap-4">
-                  {form.watch("saleStatus") !== "STREAM" && (
+                  {form.watch("flixSaleStatus") !== "STREAM" && (
                     <FormField
                       control={form.control}
                       name="price"
@@ -593,12 +593,12 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                         <FormItem className="flex flex-row gap-3 items-center justify-between rounded-lg border p-4 bg-card w-1/2">
                           <div className="space-y-0.5">
                             <FormLabel className="text-base">
-                              {form.watch("saleStatus") !== "RENT"
+                              {form.watch("flixSaleStatus") !== "RENT"
                                 ? "Starting Price"
                                 : "Per Day Rent"}
                             </FormLabel>
                             <FormDescription className="whitespace-nowrap">
-                              {form.watch("saleStatus") === "AUCTION"
+                              {form.watch("flixSaleStatus") === "AUCTION"
                                 ? "Set Starting bit"
                                 : "Set the NFT Flix price"}
                             </FormDescription>
@@ -609,7 +609,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                               pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"
                               disabled={
                                 isSubmitting ||
-                                initialData.saleStatus !== "STREAM"
+                                initialData.flixSaleStatus !== "STREAM"
                               }
                               placeholder="Price"
                               value={
@@ -635,10 +635,10 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                     />
                   )}
 
-                  {form.watch("saleStatus") === "AUCTION" && (
+                  {form.watch("flixSaleStatus") === "AUCTION" && (
                     <FormField
                       control={form.control}
-                      name="saleDetails.bottomPrice"
+                      name="flixSaleDetails.bottomPrice"
                       render={({ field }) => (
                         <FormItem className="flex flex-row gap-3 items-center justify-between rounded-lg border p-4 bg-card w-1/2">
                           <div className="space-y-0.5">
@@ -646,7 +646,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                               Bottom Price
                             </FormLabel>
                             <FormDescription className="whitespace-nowrap">
-                              {form.watch("saleStatus") === "AUCTION"
+                              {form.watch("flixSaleStatus") === "AUCTION"
                                 ? "Set the Bottom Price"
                                 : "Set the NFT Flix price"}
                             </FormDescription>
@@ -657,7 +657,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                               pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"
                               disabled={
                                 isSubmitting ||
-                                initialData.saleStatus !== "STREAM"
+                                initialData.flixSaleStatus !== "STREAM"
                               }
                               placeholder="Price"
                               value={
@@ -684,7 +684,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                   )}
                 </div>
 
-                {form.watch("saleStatus") === "AUCTION" && (
+                {form.watch("flixSaleStatus") === "AUCTION" && (
                   <div className="flex gap-4">
                     <div className="flex flex-row gap-3 items-center justify-between rounded-lg border p-4 bg-card w-1/2">
                       <div className="space-y-0.5">
@@ -700,7 +700,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                         value={selectedDateTime}
                         onChange={setSelectedDateTime}
                         granularity="minute"
-                        isDisabled={initialData.saleStatus !== "STREAM"}
+                        isDisabled={initialData.flixSaleStatus !== "STREAM"}
                       />
                     </div>
                     <FormField
@@ -735,7 +735,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
                               placeholder="Discount %"
                               disabled={
                                 isSubmitting ||
-                                initialData.saleStatus !== "STREAM" ||
+                                initialData.flixSaleStatus !== "STREAM" ||
                                 !(maxDiscount && maxDiscount >= 0)
                               }
                               value={
@@ -774,7 +774,7 @@ export const PriceForm = ({ initialData, flixId }: PriceFormProps) => {
               <Button
                 disabled={
                   isSubmitting ||
-                  initialData.saleStatus === form.watch("saleStatus")
+                  initialData.flixSaleStatus === form.watch("flixSaleStatus")
                 }
                 type="submit"
               >

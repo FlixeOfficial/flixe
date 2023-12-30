@@ -44,7 +44,7 @@ const FlixIdPage = async ({ params }: { params: { flixId: string } }) => {
           position: "asc",
         },
       },
-      saleDetails: true,
+      flixSaleDetails: true,
     },
   });
 

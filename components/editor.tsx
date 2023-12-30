@@ -19,7 +19,7 @@ export const Editor = ({
   return (
       <ReactQuill
         theme="snow"
-        placeholder= "Give the story overview here"
+        placeholder= "Describe about your artistry"
         value={value}
         onChange={onChange}
       />

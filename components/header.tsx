@@ -21,8 +21,8 @@ export default function Header() {
     ? [
         "/studio/flixs",
         "/studio/artistry",
-        "/studio/immersive",
         "/studio/adware",
+        "/studio/profile",
       ]
     : ["/cines", "/collateral", "/buzz", "/fundz"];
 
@@ -76,18 +76,12 @@ export default function Header() {
             <Link
               key={item}
               href={item}
-              onClick={(e) => {
-                if (item === "/studio/analytics" || item === "/quicks") {
-                  e.preventDefault();
-                }
-              }}
             >
               <Button
                 variant="ghost"
-                className={`text-muted-foreground hover:text-primary font-bold text-md capitalize ${isActive(
+                className={`text-muted-foreground hover:text-primary font-bold text-md capitalize hover:bg-transparent ${isActive(
                   item
                 )}`}
-                disabled={item === "/studio/analytics" || item === "/quicks"}
               >
                 {item.split("/").pop()}
               </Button>

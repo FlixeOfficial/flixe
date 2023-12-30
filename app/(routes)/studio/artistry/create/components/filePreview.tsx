@@ -29,7 +29,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
   disabled = true,
 }) => {
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
-  const previewSize = { width: 500, height: 500 }; // fixed size for 1:1 aspect ratio
+  const previewSize = { width: 600, height: 600 }; // fixed size for 1:1 aspect ratio
 
   useEffect(() => {
     if (file) {
@@ -59,7 +59,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             enableDamping={true}
             enablePan={true}
             enableZoom={true}
-            loader={<Loader2 className='h-3 w-3 animate-spin' />}
+            loader={<Loader2 className="h-3 w-3 animate-spin" />}
           />
         );
       case "Video":
@@ -107,6 +107,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             src={previewSrc ?? ""}
             alt="Original"
             layout="responsive"
+            className="max-w-[80vw] max-h-[80vh] object-contain"
             width={imageSize.width || 800}
             height={imageSize.height || 800}
             onLoad={onImageLoad}
@@ -132,7 +133,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             enableDamping={true}
             enablePan={true}
             enableZoom={true}
-            loader={<Loader2 className='h-3 w-3 animate-spin' />}
+            loader={<Loader2 className="h-3 w-3 animate-spin" />}
           />
         );
       default:
@@ -158,8 +159,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             <Expand className="h-4 w-4" />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent className="w-[80vw] h-[80vh] flex flex-col justify-center items-center">
-          <AlertDialogDescription className='w-[80vw] h-[80vh]'>
+        <AlertDialogContent className="flex flex-col justify-center items-center">
+          <AlertDialogDescription className="w-[80vw] h-[80vh] flex items-center justify-center">
             <AlertDialogCancel className="absolute top-2 right-2 z-10 rounded-full bg-foreground/10 hover:bg-muted-foreground/20 p-3 backdrop-filter backdrop-blur-md text-priamry">
               <XCircle className="h-4 w-4" />
             </AlertDialogCancel>

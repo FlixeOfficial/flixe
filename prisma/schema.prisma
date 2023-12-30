@@ -123,8 +123,8 @@ model Flix {
   flixDataUrl  String? // IPFS URL containing JSON of combined episode data of a Flix
   flixNftId    Int? // NFT ID of the flix
   isNFT        Boolean      @default(false) // Determine if the flix is an NFT or normal
-  saleStatus   SaleStatus   @default(STREAM) // Sale status: Not on sale, or auction, or fixed sale, or for rent
-  saleDetails  SaleDetails? // Details about the sale, like price, initial bid, current bid, start and end time
+  flixSaleStatus   FlixSaleStatus   @default(STREAM) // Sale status: Not on sale, or auction, or fixed sale, or for rent
+  flixSaleDetails  FlixSaleDetails? // Details about the sale, like price, initial bid, current bid, start and end time
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -133,14 +133,14 @@ model Flix {
   @@fulltext([title])
 }
 
-enum SaleStatus {
+enum FlixSaleStatus {
   STREAM
   RENT
   AUCTION
   SALE
 }
 
-model SaleDetails {
+model FlixSaleDetails {
   id                 String @id @default(uuid())
   price              Float?
   bottomPrice        Float?
@@ -213,8 +213,6 @@ model UserProgress {
   @@unique([userId, episodeId])
   @@index([episodeId])
 }
-
-// ---
 
 enum VoteType {
   UP

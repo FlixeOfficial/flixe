@@ -3,10 +3,11 @@ import Web3 from "web3";
 import abi from "@/contracts/abis/AdwareAbi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_ADWARE_CONTRACT_ADDRESS;
-const RPC_URL = process.env.NEXT_PUBLIC_THETA_RPC_URL;
+const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
 
 const MIN_GAS_PRICE_GWEI = process.env.NEXT_PUBLIC_MIN_GAS_PRICE_GWEI || "2";
-const DEFAULT_GAS_LIMIT = process.env.NEXT_PUBLIC_DEFAULT_GAS_LIMIT || "3000000";
+const DEFAULT_GAS_LIMIT =
+  process.env.NEXT_PUBLIC_DEFAULT_GAS_LIMIT || "3000000";
 
 export async function POST(req: NextRequest) {
   console.log("hello from the api");
@@ -30,9 +31,7 @@ export async function POST(req: NextRequest) {
     const contentCreator = body.walletAddress;
     console.log("key: ", process.env.WALLET_PRIVATE_KEY);
     // Initialize Web3 with the server's wallet
-    const web3 = new Web3(
-      new Web3.providers.HttpProvider(RPC_URL)
-    );
+    const web3 = new Web3(new Web3.providers.HttpProvider(RPC_URL));
     const account = web3.eth.accounts.privateKeyToAccount(
       "0x" + process.env.WALLET_PRIVATE_KEY
     );
@@ -62,9 +61,13 @@ export async function POST(req: NextRequest) {
       //   .encodeABI(),
     };
 
-    const signedTx = await web3.eth.accounts.signTransaction(tx, account.privateKey);
-    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-
+    const signedTx = await web3.eth.accounts.signTransaction(
+      tx,
+      account.privateKey
+    );
+    const receipt = await web3.eth.sendSignedTransaction(
+      signedTx.rawTransaction
+    );
 
     // Parsing the event data from the receipt (assuming the event is named 'VideoAdPlayed')
     const videoAdPlayedEvent = receipt.events?.VideoAdPlayed?.returnValues;
@@ -86,8 +89,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     // Handle errors
+    console.log(error);
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
+    console.log(errorMessage);
     return new NextResponse(
       JSON.stringify({ success: false, error: errorMessage }),
       { status: 500 }

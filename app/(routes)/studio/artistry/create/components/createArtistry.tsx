@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -27,6 +27,8 @@ import { Combobox } from "@/components/ui/combobox";
 import { useToast } from "@/components/ui/use-toast";
 import FilePreview from "./filePreview";
 import MarketplaceInteraction from "@/contracts/interaction/MarketplaceInteraction";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type Category = {
   id: string;
@@ -95,6 +97,12 @@ const formSchema = z.object({
     ),
 });
 
+const NFTTypes = [
+  { name: "Standard", videoSrc: "/art.mp4", disabled: false },
+  { name: "Dynamic", videoSrc: "/dynamic.mp4", disabled: false },
+  { name: "Immersive", videoSrc: "/art.mp4", disabled: true },
+];
+
 const CreateArtistry = ({ categories }: CreateArtistryProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -109,6 +117,23 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
   }, []);
 
   const router = useRouter();
+
+  const [selectedNFTType, setSelectedNFTType] = useState("Standard");
+  const videoRefs = useRef(new Array(NFTTypes.length).fill(null));
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedNFTType(event.target.value);
+  };
+
+  const handleMouseEnter = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) video.play();
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) video.pause();
+  };
 
   const categorieOptions = categories.map((category) => ({
     label: category.name,
@@ -244,7 +269,7 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
           <div className="font-medium flex flex-col gap-4">
             <h1 className="text-3xl font-bold tracking-wider">
               Create a new{" "}
-              <span className="font-black text-[#8b7ad0]">ART</span>
+              <span className="font-black text-[#8b7ad0]">Artistry</span>
             </h1>
           </div>
         </div>
@@ -266,7 +291,54 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
           className="w-full mt-10 flex flex-col gap-10"
         >
           <div className="flex gap-8">
-            <div className="font-medium flex flex-col justify-evenly gap-10 w-2/3">
+            <div className="font-medium flex flex-col justify-evenly gap-10 w-3/5 min-[2300px]:w-2/3">
+              <RadioGroup
+                defaultValue="Standard"
+                className="grid grid-cols-3 gap-8 px-2"
+                onChange={handleRadioChange}
+              >
+                {NFTTypes.map((type, index) => (
+                  <div key={type.name} className="relative">
+                    <RadioGroupItem
+                      value={type.name}
+                      id={type.name}
+                      className="peer sr-only"
+                      disabled={type.disabled}
+                    />
+                    <Label
+                      htmlFor={type.name}
+                      className="h-24 max-h-24 flex items-center justify-center rounded-md ring-2 ring-[#7aaed050] ring-offset-2 ring-offset-background bg-popover p-4 hover:bg-accent hover:ring-[#7aaed050] peer-data-[state=checked]:ring-[#7aaed0] [&:has([data-state=checked])]:ring-[#7aaed0] relative"
+                      onMouseEnter={() => handleMouseEnter(index)}
+                      onMouseLeave={() => handleMouseLeave(index)}
+                    >
+                      {/* Video Element */}
+                      {!type.disabled && (
+                        <video
+                          ref={(el) => (videoRefs.current[index] = el)}
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover rounded-md z-8"
+                          style={{ filter: "brightness(95%)" }}
+                        >
+                          <source src={type.videoSrc} type="video/mp4" />
+                        </video>
+                      )}
+                      <div
+                        className="absolute inset-0 w-full h-full bg-black rouded-md opacity-10 z-9"
+                        style={{
+                          backgroundImage: `url("/noise.png")`,
+                        }}
+                      ></div>
+                      {/* Text Overlay */}
+                      <span className="relative font-bold text-white z-10">
+                        {type.name}
+                      </span>
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+
               <div className="flex gap-4 w-full">
                 <FormField
                   control={form.control}
@@ -506,7 +578,7 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
                 ))}
               </div>
             </div>
-            <div className="font-medium flex flex-col gap-8 w-1/3 relative">
+            <div className="font-medium flex flex-col gap-8 w-2/5 min-[2300px]:w-1/3 relative">
               {/* Image Preview */}
               <FilePreview
                 file={form.watch("art")}
@@ -517,7 +589,7 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
                 disabled={fileType === "Unknown"}
               />
 
-              <div className="relative group hover:shadow-sm w-[500px] h-[340px] rounded-lg bg-card cursor-pointer hover:bg-card self-end border">
+              <div className="relative group hover:shadow-sm w-[600px] h-[340px] rounded-lg bg-card cursor-pointer hover:bg-card self-end border">
                 <div className="relative h-full">
                   {form.watch("image") ? (
                     <Image

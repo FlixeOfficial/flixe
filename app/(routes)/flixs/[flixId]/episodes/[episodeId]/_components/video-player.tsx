@@ -180,6 +180,16 @@ export const VideoPlayer = ({
         try {
           setAdStatus("loading");
 
+          const response = await fetch("/api/display-next-videoad", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ walletAddress: flixs.userId }),
+          });
+
+          debugger;
+
           const adwareInteraction = await AdwareInteraction();
 
           const newAdData = await adwareInteraction.displayNextVideoAd(

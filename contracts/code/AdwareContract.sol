@@ -73,13 +73,13 @@ contract Adware {
 
     // Constructor to initialize the contract with initial values
     constructor(
-        address _platformWallet,
+        address _contractOwner,
         uint256 _startingBidPrice,
         uint256 _videoAdSpotPrice
     ) {
-        platformWallet = _platformWallet;
+        platformWallet = _contractOwner;
         nextAuctionEndTime = block.timestamp + DAY_IN_SECONDS;
-        contractOwner = msg.sender;
+        contractOwner = _contractOwner;
         startingBidPrice = _startingBidPrice;
         videoAdSpotPrice = _videoAdSpotPrice;
     }

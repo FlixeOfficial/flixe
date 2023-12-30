@@ -45,7 +45,7 @@ export async function POST(
                 isPublished: true,
             },
             include: {
-                saleDetails: true,
+                flixSaleDetails: true,
                 episodes: true,
             },
         });
@@ -58,9 +58,9 @@ export async function POST(
             return new NextResponse("Already purchased", { status: 400 });
         }
 
-        if (flix.saleDetails) {
-            await db.saleDetails.delete({
-                where: { id: flix.saleDetails.id },
+        if (flix.flixSaleDetails) {
+            await db.flixSaleDetails.delete({
+                where: { id: flix.flixSaleDetails.id },
             });
         }
 

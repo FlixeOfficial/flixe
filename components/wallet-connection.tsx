@@ -181,7 +181,7 @@ export function WalletConnection({ home = false }: { home?: boolean }) {
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className='className="group h-9 right-[4%] rounded-sm backdrop-blur-md border font-bold text-muted-foreground hover:text-primary border-zinc-600 hover:bg-card bg-accent hover:dark:text-[#de8b8b] hover:dark:border-[#de8b8baa] hover:text-[#f33d3d]'>
+            <Button className='className="group h-9 right-[4%] rounded-sm backdrop-blur-md border font-bold text-muted-foreground hover:text-primary hover:bg-card bg-transparent hover:dark:text-[#de8b8b] hover:dark:border-[#de8b8baa] hover:text-[#f33d3d]'>
               {/* <Image
                 src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2070"
                 alt={`Thumbnail`}
