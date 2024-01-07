@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CreateLoanProposal from './components/proposeLoan';
-import LendLoan from './components/lendLoan';
+import CreateLoanProposal from './_components/proposeLoan';
+import LendLoan from './_components/lendLoan';
 
 export default function Home() {
   return (

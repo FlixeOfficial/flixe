@@ -34,7 +34,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Underline } from "@/app/(routes)/(flixe)/(home)/components/underline";
+import { Underline } from "@/app/(routes)/(flixe)/(home)/_components/underline";
 
 export function WalletConnection({ home = false }: { home?: boolean }) {
   useWallet();

@@ -4,7 +4,7 @@ import { calculateBarPercentage, daysLeft } from "@/lib/daysLeft";
 import useCrowdFundingStore from "@/store/crowdFundingStore";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import CountBox from "../../../../../components/CountBox";
+import CountBox from "@/components/CountBox";
 import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";

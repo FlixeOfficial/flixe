@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 import authOptions from "@/app/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
-import CreateArtistry from "./components/createArtistry";
+import CreateArtistry from "./_components/createArtistry";
 
 interface Session {
   user?: {

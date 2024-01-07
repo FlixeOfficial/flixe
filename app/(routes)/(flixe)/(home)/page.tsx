@@ -4,13 +4,13 @@ import authOptions from "@/app/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { WalletConnection } from "@/components/wallet-connection";
 import Image from "next/image";
-// import { ScrollCore } from "./components/scroll";
-// import { BackgroundSVG } from './components/backgroundBeam';
-// import { MeteorPreview } from './components/meteorPreview';
-// import { Lamp } from './components/SVGMaskEffect';
-import { Meteors } from "./components/meteors";
-import NightSky from "./components/nightSky";
-import Stars from "./components/stars";
+// import { ScrollCore } from "./_components/scroll";
+// import { BackgroundSVG } from './_components/backgroundBeam';
+// import { MeteorPreview } from './_components/meteorPreview';
+// import { Lamp } from './_components/SVGMaskEffect';
+import { Meteors } from "./_components/meteors";
+import NightSky from "./_components/nightSky";
+import Stars from "./_components/stars";
 
 interface Session {
   user?: {
