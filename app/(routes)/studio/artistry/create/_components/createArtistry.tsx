@@ -30,6 +30,7 @@ import MarketplaceInteraction from "@/contracts/interaction/MarketplaceInteracti
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import InteractiveNFT from "./InteractiveNFT/InteractiveNFT";
+import Player from "./musicPlayer/Player";
 
 type Category = {
   id: string;
@@ -203,15 +204,17 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
 
   const determineFileType = (file: any) => {
     const fileType = file.type;
-    const model = file.name.split(".").pop().toLowerCase();
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    const audioExtensions = ["mp3", "wav", "ogg", "flac", "aac", "webm"];
+  
     if (fileType.startsWith("image/")) {
       setFileType("Image");
-    } else if (["gltf", "glb"].includes(model)) {
+    } else if (["gltf", "glb"].includes(fileExtension)) {
       setFileType("Model");
-    } else if (fileType.startsWith("video/")) {
-      setFileType("Video");
-    } else if (fileType.startsWith("audio/")) {
+    } else if (fileType.startsWith("audio/") || audioExtensions.includes(fileExtension)) {
       setFileType("Music");
+    } else if (fileType.startsWith("video/") && !audioExtensions.includes(fileExtension)) {
+      setFileType("Video");
     } else {
       setFileType("Unknown");
     }
@@ -597,15 +600,16 @@ const CreateArtistry = ({ categories }: CreateArtistryProps) => {
             </div>
             <div className="font-medium flex flex-col gap-8 w-2/5 min-[2300px]:w-1/3 relative">
               {/* Image Preview */}
-              {/* <FilePreview
+              <FilePreview
                 file={form.watch("art")}
+                cover={form.watch("image")}
                 fileType={fileType}
                 className={`self-end ${
                   !fileType ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={fileType === "Unknown"}
-              /> */}
-              <InteractiveNFT formData={formData} setFormData={setFormData} />
+              />
+              {/* <InteractiveNFT formData={formData} setFormData={setFormData} /> */}
               <div className="relative group hover:shadow-sm w-[600px] h-[340px] rounded-lg bg-card cursor-pointer hover:bg-card self-end border">
                 <div className="relative h-full">
                   {form.watch("image") ? (

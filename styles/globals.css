@@ -173,7 +173,14 @@
 }
 
 .flixe-gradient {
-  background:linear-gradient(-45deg, #a0e4e0, #b8e6d1, #c7f5c0, #d9f9b1, #e4f9a0);
+  background: linear-gradient(
+    -45deg,
+    #a0e4e0,
+    #b8e6d1,
+    #c7f5c0,
+    #d9f9b1,
+    #e4f9a0
+  );
   background-size: 400% 400%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -191,8 +198,13 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .star {

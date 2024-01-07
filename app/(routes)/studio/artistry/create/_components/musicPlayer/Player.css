@@ -1,0 +1,127 @@
+#player-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+#player-wrapper #vinyl-container {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  margin: 1rem 0;
+  position: relative;
+  cursor: pointer;
+}
+#player-wrapper #vinyl-container #vinyl-cover {
+  width: 200px;
+  height: 200px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+  transform: translate(-25%, 0);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#player-wrapper #vinyl-container #vinyl-cover::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://images.unsplash.com/photo-1517167685284-96a27681ad75?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80");
+  background-size: 100%;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+  content: "";
+  border-radius: 4px;
+}
+#player-wrapper #vinyl-container #vinyl-cover::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://images.unsplash.com/photo-1579121272287-b46a81b36403?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80");
+  background-size: 100%;
+  mix-blend-mode: screen;
+  opacity: 0.3;
+  content: "";
+  border-radius: 4px;
+}
+#player-wrapper #vinyl-container .vinyl-record {
+  width: 190px;
+  height: 190px;
+  border-radius: 100%;
+  background-color: #000;
+  z-index: 2;
+  position: absolute;
+  left: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+  background-position: center;
+  background-size: cover;
+  transition: 0.6s;
+  animation: rotate 3s linear infinite;
+}
+
+#player-wrapper #vinyl-container .paused {
+  animation-play-state: paused;
+}
+
+#player-wrapper #vinyl-container .vinyl-record::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://assets.codepen.io/141041/vinyl.png");
+  background-size: cover;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+  content: "";
+}
+#player-wrapper #vinyl-container .vinyl-record:hover {
+  left: 50%;
+  transition: 0.6s;
+}
+
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes previous-text {
+  50%,
+  55% {
+    transform: translate(0%, 34px);
+  }
+  to {
+    transform: translate(0%, 32px);
+  }
+}
+@keyframes next-text {
+  50%,
+  55% {
+    transform: translate(0%, -34px);
+  }
+  to {
+    transform: translate(0%, -32px);
+  }
+}

@@ -14,9 +14,11 @@ import ThreeDModel from "./ThreeDModel";
 import { Button } from "@/components/ui/button";
 import { Expand, Loader2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Player from "./musicPlayer/Player";
 
 type FilePreviewProps = {
   file: File;
+  cover: File;
   fileType: "Image" | "Model" | "Video" | "Music" | "Unknown";
   className?: string;
   disabled?: boolean;
@@ -24,27 +26,38 @@ type FilePreviewProps = {
 
 const FilePreview: React.FC<FilePreviewProps> = ({
   file,
+  cover,
   fileType,
   className,
   disabled = true,
 }) => {
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
+  const [fileURL, setFileURL] = useState<string | null>(null);
+  const [coverURL, setCoverURL] = useState<string | null>(null);
   const previewSize = { width: 600, height: 600 }; // fixed size for 1:1 aspect ratio
 
   useEffect(() => {
     if (file) {
       const src = URL.createObjectURL(file);
-      setPreviewSrc(src);
+      setFileURL(src);
       return () => URL.revokeObjectURL(src);
     }
   }, [file]);
+
+  useEffect(() => {
+    if (cover) {
+      debugger;
+      const src = URL.createObjectURL(cover);
+      setCoverURL(src);
+      return () => URL.revokeObjectURL(src);
+    }
+  }, [cover]);
 
   const renderPreview = () => {
     switch (fileType) {
       case "Image":
         return (
           <Image
-            src={previewSrc ?? ""}
+            src={fileURL ?? ""}
             alt="Preview"
             layout="fill"
             objectFit="cover"
@@ -53,7 +66,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
       case "Model":
         return (
           <ThreeDModel
-            modelUrl={previewSrc ?? ""}
+            modelUrl={fileURL ?? ""}
             modelScale={1}
             animate={true}
             enableDamping={true}
@@ -66,22 +79,14 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         return (
           <video
             controls
-            src={previewSrc ?? ""}
+            src={fileURL ?? ""}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           >
-            <source src={previewSrc ?? ""} type={file.type} />
+            <source src={fileURL ?? ""} type={file.type} />
           </video>
         );
       case "Music":
-        return (
-          <audio
-            controls
-            src={previewSrc ?? ""}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <source src={previewSrc ?? ""} type={file.type} />
-          </audio>
-        );
+        return <Player coverImage={coverURL ?? ""} musicSrc={fileURL ?? ""} />;
       default:
         return (
           <div className="flex flex-col justify-center items-center bg-card w-[100%] h-[100%] rounded-lg text-center p-5 font-semibold text-xl text-primary/30">
@@ -104,7 +109,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
       case "Image":
         return (
           <Image
-            src={previewSrc ?? ""}
+            src={fileURL ?? ""}
             alt="Original"
             layout="responsive"
             className="max-w-[80vw] max-h-[80vh] object-contain"
@@ -117,7 +122,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         // For videos, use a video tag with controls
         return (
           <video
-            src={previewSrc ?? ""}
+            src={fileURL ?? ""}
             controls
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           />
@@ -127,7 +132,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
         // Ensure it's capable of handling the model URL and adjust props as necessary
         return (
           <ThreeDModel
-            modelUrl={previewSrc ?? ""}
+            modelUrl={fileURL ?? ""}
             modelScale={1}
             animate={true}
             enableDamping={true}
@@ -136,6 +141,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({
             loader={<Loader2 className="h-3 w-3 animate-spin" />}
           />
         );
+      case "Music":
+        return <Player coverImage={coverURL ?? ""} musicSrc={fileURL ?? ""} />;
       default:
         // Default case for unsupported file types
         return <div>Unsupported file type</div>;
@@ -150,6 +157,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({
       )}
     >
       {renderPreview()}
+
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
